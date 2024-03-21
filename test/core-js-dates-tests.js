@@ -310,7 +310,7 @@ describe('core-js-dates', () => {
   it.optional(
     'getWeekNumberByDate should return the week number of the year by date',
     () => {
-      assert.equal(tasks.getWeekNumberByDate(new Date()), 1);
+      assert.equal(tasks.getWeekNumberByDate(new Date(2024, 0, 3)), 1);
       assert.equal(tasks.getWeekNumberByDate(new Date(2024, 0, 31)), 5);
       assert.equal(tasks.getWeekNumberByDate(new Date(2024, 1, 23)), 8);
       assert.equal(tasks.getWeekNumberByDate(new Date(2023, 1, 23)), 9);
