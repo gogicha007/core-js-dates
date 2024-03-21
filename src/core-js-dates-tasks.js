@@ -140,8 +140,13 @@ function getCountDaysOnPeriod(dateStart, dateEnd) {
  * '2024-02-02', { start: '2024-02-02', end: '2024-03-02' } => true
  * '2024-02-10', { start: '2024-02-02', end: '2024-03-02' } => true
  */
-function isDateInPeriod(/* date, period */) {
-  throw new Error('Not implemented');
+function isDateInPeriod(date, period) {
+  const start = new Date(period.start);
+  const end = new Date(period.end);
+  const theDate = new Date(date);
+  return (
+    theDate.valueOf() >= start.valueOf() && theDate.valueOf() <= end.valueOf()
+  );
 }
 
 /**
@@ -155,10 +160,18 @@ function isDateInPeriod(/* date, period */) {
  * '1999-01-05T02:20:00.000Z' => '1/5/1999, 2:20:00 AM'
  * '2010-12-15T22:59:00.000Z' => '12/15/2010, 10:59:00 PM'
  */
-function formatDate(/* date */) {
-  throw new Error('Not implemented');
+function formatDate(date) {
+  const resDate = new Date(date);
+  const year = resDate.getUTCFullYear().toString();
+  const month = (resDate.getUTCMonth() + 1).toString();
+  const dayNo = resDate.getUTCDate().toString();
+  const hours = resDate.getUTCHours().toString();
+  const min = `${resDate.getUTCMinutes() < 10 ? '0' : ''}${resDate.getUTCMinutes().toString()}`;
+  const sec = `${resDate.getUTCSeconds() < 10 ? '0' : ''}${resDate.getUTCSeconds().toString()}`;
+  const dayPeriod = hours / 12 >= 1 ? 'PM' : 'AM';
+  const result = `${month}/${dayNo}/${year}, ${hours % 12 === 0 ? '12' : hours % 12}:${min}:${sec} ${dayPeriod}`;
+  return result;
 }
-
 /**
  * Returns the total number of weekend days (Saturdays and Sundays) in a specified month and year.
  *
@@ -171,8 +184,19 @@ function formatDate(/* date */) {
  * 12, 2023 => 10
  * 1, 2024 => 8
  */
-function getCountWeekendsInMonth(/* month, year */) {
-  throw new Error('Not implemented');
+function getCountWeekendsInMonth(month, year) {
+  const mnth = month - 1;
+  let day = 1;
+  let counter = 0;
+  let date = new Date(Date.UTC(year, mnth, 1));
+  while (date.getMonth() === mnth) {
+    if (date.getDay() === 0 || date.getDay() === 6) {
+      counter += 1;
+    }
+    day += 1;
+    date = new Date(year, mnth, day);
+  }
+  return counter;
 }
 
 /**
